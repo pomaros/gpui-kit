@@ -190,7 +190,10 @@ impl ThemeRegistry {
             std::fs::create_dir_all(&themes_dir)?;
         }
 
+        #[cfg(not(target_os = "aros"))]
         let (tx, rx) = smol::channel::bounded(1);
+        #[cfg(target_os = "aros")]
+        let (tx, rx) = async_channel::bounded(1);
         let mut watcher = notify::RecommendedWatcher::new(
             move |res: notify::Result<notify::Event>| match res {
                 Ok(event) => {

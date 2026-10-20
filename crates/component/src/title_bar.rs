@@ -251,7 +251,15 @@ struct WindowControls {
 
 impl RenderOnce for WindowControls {
     fn render(self, window: &mut Window, _: &mut App) -> impl IntoElement {
-        if cfg!(target_os = "macos") || cfg!(target_family = "wasm") {
+        // AROS, like macOS, is server-decorated: Intuition draws the close,
+        // depth and zoom gadgets in the window border, so client-side controls
+        // would duplicate them one row lower, and they would be inert here
+        // (`window_control_area` is wired for Windows, the click handlers
+        // for Linux).
+        if cfg!(target_os = "macos")
+            || cfg!(target_os = "aros")
+            || cfg!(target_family = "wasm")
+        {
             return div().id("window-controls");
         }
 

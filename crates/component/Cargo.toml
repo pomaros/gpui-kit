@@ -150,8 +150,15 @@ lsp-types.workspace = true
 instant.workspace = true
 
 # Native-only dependencies (not available on WASM)
-[target.'cfg(not(target_family = "wasm"))'.dependencies]
+[target.'cfg(not(any(target_family = "wasm", target_os = "aros")))'.dependencies]
 smol.workspace = true
+
+# AROS: smol's async-io reactor has no AROS arm; the channel is async-channel
+# directly (what smol::channel re-exports).
+[target.'cfg(target_os = "aros")'.dependencies]
+async-channel = "2.3.1"
+
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
 cpal = { version = "0.15.3", optional = true }
 tree-sitter = { version = "0.26.13", optional = true }
 tree-sitter-astro-next = { version="0.1.1", optional = true }

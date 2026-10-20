@@ -6,7 +6,10 @@ use cpal::{
     traits::{DeviceTrait as _, HostTrait as _, StreamTrait as _},
 };
 use gpui::{App, Subscription};
+#[cfg(not(target_os = "aros"))]
 use smol::channel::{Sender, unbounded};
+#[cfg(target_os = "aros")]
+use async_channel::{Sender, unbounded};
 
 use super::{AudioFormat, AudioInput, AudioSink, SpeechError};
 

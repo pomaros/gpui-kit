@@ -57,10 +57,10 @@ unicode-linebreak = "0.1.5"
 unicode-segmentation = "1.12.0"
 web-time = "1"
 
-[target.'cfg(not(target_family = "wasm"))'.dependencies]
+[target.'cfg(not(any(target_family = "wasm", target_os = "aros")))'.dependencies]
 smol.workspace = true
 
-[target.'cfg(target_family = "wasm")'.dependencies]
+[target.'cfg(any(target_family = "wasm", target_os = "aros"))'.dependencies]
 async-channel = "2.3.1"
 
 [target.'cfg(target_os = "macos")'.dependencies]
